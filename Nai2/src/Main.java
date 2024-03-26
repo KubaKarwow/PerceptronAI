@@ -1,7 +1,9 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -21,5 +23,21 @@ public class Main {
         }
         System.out.println("out of "+testRows.size() + " test rows, "+amountOfCheckedOnes+" were correct");
         System.out.println("algorithm works " + (amountOfCheckedOnes*100.0)/testRows.size()+"% of the time");
+
+        while(true){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("please supply the attributes, amount:"+rows.get(0).numericAttributes.length);
+            String row = scanner.nextLine();
+            DataRow dataRow = new DataRow(row,true);
+            String s = perceptor.testOwnInput(dataRow);
+            System.out.println("result for these attributes is:"+s);
+
+            System.out.println("would you like to continue 1-yes,not 1-no");
+            int i = scanner.nextInt();
+            if(i!=1) return;
+
+        }
+
+
     }
 }

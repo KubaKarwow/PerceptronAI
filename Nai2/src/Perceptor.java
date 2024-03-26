@@ -27,26 +27,32 @@ public class Perceptor {
             skalar += weights[j] * row.numericAttributes[j];
         }
         if (skalar >= weights[weights.length - 1]){
-            return row.resultAttribute.equals("Iris-setosa");
+            return row.resultAttribute.strip().equals("Iris-setosa");
         } else {
-            return !row.resultAttribute.equals("Iris-setosa");
+            return !row.resultAttribute.strip().equals("Iris-setosa");
         }
 
     }
+    public String testOwnInput(DataRow row) {
+        double skalar = 0.0;
+        for (int j = 0; j < weights.length - 1; j++) {
+            skalar += weights[j] * row.numericAttributes[j];
+        }
+        if (skalar >= weights[weights.length - 1]){
+            return "Iris-Setosa";
+        } else {
+            return "Not Iris-Setosa";
+        }
 
+    }
     public void train() {
         for (int i = 0; i < 500; i++) {
             boolean isEverythingGood = true;
             for (DataRow row : training) {
-                System.out.println("--------------------NEW ROW-------------------");
-                System.out.println(this);
-                System.out.println(row);
                 boolean b = processRow(row);
-                System.out.println(b);
                 if (!b) isEverythingGood = false;
             }
             if (isEverythingGood) {
-                System.out.println(i);
                 break;
             }
         }
@@ -60,11 +66,8 @@ public class Perceptor {
             skalar += weights[i] * row.numericAttributes[i];
         }
         skalar += weights[weights.length - 1] * -1;
-        System.out.println("SKALAR:" + skalar);
         actualResult = skalar >= weights[weights.length - 1] ? 1 : 0;
-        System.out.println("ACTUAL RESULT:" + actualResult);
         properResult = row.resultAttribute.equals("Iris-setosa") ? 1 : 0;
-        System.out.println("PROPER RESULT:" + properResult);
         adjustWeights(properResult, actualResult, row);
         if (!(actualResult == properResult)) processRow(row);
         return actualResult == properResult;
